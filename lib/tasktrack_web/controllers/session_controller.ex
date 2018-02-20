@@ -12,7 +12,7 @@ defmodule TasktrackWeb.SessionController do
       |> redirect(to: page_path(conn, :feed))
     else
       conn
-      |> put_flash(:error, "Can't create session")
+      |> put_flash(:error, "Login failed,please enter correct email address")
       |> redirect(to: page_path(conn, :index))
     end
   end
