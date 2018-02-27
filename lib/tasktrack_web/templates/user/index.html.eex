@@ -1,28 +1,69 @@
 <h2>Listing Users</h2>
+<script>
+window.manage_path = "<%= manage_path(@conn, :index) %>";
+window.current_user_id = "<%= @current_user.id %>";
+</script>
 
 <table class="table">
   <thead>
     <tr>
+      <th>-</th>
+      <th>Id</th>
       <th>Email</th>
       <th>Name</th>
-
+      <th>Manager</th>
+      <th>Managees</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-<%= for user <- @users do %>
+    <%= for user <- @users do %>
     <tr>
-      <td><%= user.email %></td>
-      <td><%= user.name %></td>
 
-      <td class="text-right">
-        <span><%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: user_path(@conn, :edit, user), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
+      <td>
+
+        <%= if (@current_user.manager && user.name==@current_user.manager.name) || user.name==@current_user.name do %>
+        <p> Can't manage this user </p>
+        <% else %>
+
+        <%= if user.manager && !(user.manager.name==@current_user.name) do %>
+        <p>Already has a manager</p>
+        <% else %>
+        <button class="manage-button btn btn-secondary"
+        data-user-id="<%= user.id %>"
+        data-manage="<%= @manages[user.id] %>">
+        Manage
+      </button>
+      <% end %>
+      <% end %>
+    </td>
+    <td><%=user.id %></td>
+    <td><%= user.email %></td>
+    <td><%= user.name %></td>
+    <td><%= if user.manager do %>
+      <%= user.manager.name %>
+      <% else %>
+      Not assigned
+      <% end %>
+    </td>
+    <td>
+      <%= if user.managees do %>
+      <%= for managee <- user.managees do %>
+      <p><%= managee.name %> &nbsp;</p>
+      <% end %>
+      <% else %>
+      <p>No assignees</p>
+      <% end %>
+    </td>
+
+    <td class="text-right">
+      <span><%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %></span>
+      <!--<span><%= link "Edit", to: user_path(@conn, :edit, user), class: "btn btn-default btn-xs" %></span>
+      <span><%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>-->
+    </td>
+  </tr>
+  <% end %>
+</tbody>
 </table>
 
 <span><%= link "New User", to: user_path(@conn, :new) %></span>

@@ -1,4 +1,4 @@
-<%= if @current_user do %>
+<%= if @current_user && Enum.count(@manages)>=1 do %>
 <div class="row">
   <div class="col">
     <div class="card">

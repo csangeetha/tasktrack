@@ -12202,6 +12202,107 @@ require.register("js/app.js", function(exports, require, module) {
 
 require("phoenix_html");
 
+var _jquery = require("jquery");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Import local files
+//
+// Local files can be imported directly using relative
+// paths "./socket" or full ones "web/static/js/socket".
+
+// import socket from "./socket"
+// Brunch automatically concatenates all files in your
+// watched paths. Those paths can be configured at
+// config.paths.watched in "brunch-config.js".
+//
+// However, those files will only be executed if
+// explicitly imported. The only exception are files
+// in vendor, which are never wrapped in imports and
+// therefore are always executed.
+
+// Import dependencies
+//
+// If you no longer want to use a dependency, remember
+// to also remove its path from "config.paths.watched".
+function update_buttons() {
+  (0, _jquery2.default)('.manage-button').each(function (_, bb) {
+    var user_id = (0, _jquery2.default)(bb).data('user-id');
+    var manage = (0, _jquery2.default)(bb).data('manage');
+    if (manage != "") {
+      (0, _jquery2.default)(bb).text("Release");
+    } else {
+      (0, _jquery2.default)(bb).text("Manage");
+    }
+  });
+}
+
+function set_button(user_id, value) {
+  (0, _jquery2.default)('.manage-button').each(function (_, bb) {
+    if (user_id == (0, _jquery2.default)(bb).data('user-id')) {
+      (0, _jquery2.default)(bb).data('manage', value);
+    }
+  });
+  update_buttons();
+}
+
+function manage(user_id) {
+  var text = JSON.stringify({
+    manage: {
+      manager_id: current_user_id,
+      managee_id: user_id
+    }
+  });
+
+  _jquery2.default.ajax(manage_path, {
+    method: "post",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: text,
+    success: function success(resp) {
+      set_button(user_id, resp.data.id);
+    }
+  });
+}
+
+function release(user_id, manage_id) {
+  _jquery2.default.ajax(manage_path + "/" + manage_id, {
+    method: "delete",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: "",
+    success: function success() {
+      set_button(user_id, "");
+    }
+  });
+}
+
+function manage_click(ev) {
+  var btn = (0, _jquery2.default)(ev.target);
+  var manage_id = btn.data('manage');
+  var user_id = btn.data('user-id');
+
+  if (manage_id != "") {
+    release(user_id, manage_id);
+  } else {
+    manage(user_id);
+  }
+}
+
+function init_manage() {
+  if (!(0, _jquery2.default)('.manage-button')) {
+    return;
+  }
+
+  (0, _jquery2.default)(".manage-button").click(manage_click);
+
+  update_buttons();
+}
+
+(0, _jquery2.default)(init_manage);
+
 });
 
 require.register("js/socket.js", function(exports, require, module) {

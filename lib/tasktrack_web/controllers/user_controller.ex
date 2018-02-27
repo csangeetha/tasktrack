@@ -5,8 +5,10 @@ defmodule TasktrackWeb.UserController do
   alias Tasktrack.Accounts.User
 
   def index(conn, _params) do
+    current_user = conn.assigns[:current_user]
     users = Accounts.list_users()
-    render(conn, "index.html", users: users)
+    manages= Tasktrack.Assignments.manages_map_for(current_user.id)
+    render(conn, "index.html", users: users , manages: manages)
   end
 
   def new(conn, _params) do

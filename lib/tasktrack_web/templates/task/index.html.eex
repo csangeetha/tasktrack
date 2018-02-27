@@ -8,7 +8,8 @@
       <th>Description</th>
       <th>Time taken</th>
       <th>Status</th>
-
+      <th>Start Time</th>
+      <th>End Time</th>
       <th></th>
     </tr>
   </thead>
@@ -20,6 +21,24 @@
       <td><%= task.description %></td>
       <td><%= task.time_taken %></td>
       <td><%= task.status %></td>
+      <td>
+        <%=if task.time_blocks do %>
+          <%= for time_block <- task.time_blocks do %>
+          <%= time_block.start_time %>
+          <% end %>
+        <% else %>
+          no time block
+        <% end %>
+      </td>
+      <td>
+        <%=if task.time_blocks do %>
+          <%= for time_block <- task.time_blocks do %>
+          <%= time_block.end_time %>
+          <% end %>
+        <% else %>
+          no time block
+        <% end %>
+      </td>
 
       <td class="text-right">
         <span><%= link "Show", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>

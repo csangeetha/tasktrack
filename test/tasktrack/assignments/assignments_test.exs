@@ -68,4 +68,126 @@ defmodule Tasktrack.AssignmentsTest do
       assert %Ecto.Changeset{} = Assignments.change_task(task)
     end
   end
+
+  describe "manages" do
+    alias Tasktrack.Assignments.Manage
+
+    @valid_attrs %{managee_: "some managee_"}
+    @update_attrs %{managee_: "some updated managee_"}
+    @invalid_attrs %{managee_: nil}
+
+    def manage_fixture(attrs \\ %{}) do
+      {:ok, manage} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Assignments.create_manage()
+
+      manage
+    end
+
+    test "list_manages/0 returns all manages" do
+      manage = manage_fixture()
+      assert Assignments.list_manages() == [manage]
+    end
+
+    test "get_manage!/1 returns the manage with given id" do
+      manage = manage_fixture()
+      assert Assignments.get_manage!(manage.id) == manage
+    end
+
+    test "create_manage/1 with valid data creates a manage" do
+      assert {:ok, %Manage{} = manage} = Assignments.create_manage(@valid_attrs)
+      assert manage.managee_ == "some managee_"
+    end
+
+    test "create_manage/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Assignments.create_manage(@invalid_attrs)
+    end
+
+    test "update_manage/2 with valid data updates the manage" do
+      manage = manage_fixture()
+      assert {:ok, manage} = Assignments.update_manage(manage, @update_attrs)
+      assert %Manage{} = manage
+      assert manage.managee_ == "some updated managee_"
+    end
+
+    test "update_manage/2 with invalid data returns error changeset" do
+      manage = manage_fixture()
+      assert {:error, %Ecto.Changeset{}} = Assignments.update_manage(manage, @invalid_attrs)
+      assert manage == Assignments.get_manage!(manage.id)
+    end
+
+    test "delete_manage/1 deletes the manage" do
+      manage = manage_fixture()
+      assert {:ok, %Manage{}} = Assignments.delete_manage(manage)
+      assert_raise Ecto.NoResultsError, fn -> Assignments.get_manage!(manage.id) end
+    end
+
+    test "change_manage/1 returns a manage changeset" do
+      manage = manage_fixture()
+      assert %Ecto.Changeset{} = Assignments.change_manage(manage)
+    end
+  end
+
+  describe "time_blocks" do
+    alias Tasktrack.Assignments.Time_Block
+
+    @valid_attrs %{end_time: ~N[2010-04-17 14:00:00.000000], start_time: ~N[2010-04-17 14:00:00.000000]}
+    @update_attrs %{end_time: ~N[2011-05-18 15:01:01.000000], start_time: ~N[2011-05-18 15:01:01.000000]}
+    @invalid_attrs %{end_time: nil, start_time: nil}
+
+    def time__block_fixture(attrs \\ %{}) do
+      {:ok, time__block} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Assignments.create_time__block()
+
+      time__block
+    end
+
+    test "list_time_blocks/0 returns all time_blocks" do
+      time__block = time__block_fixture()
+      assert Assignments.list_time_blocks() == [time__block]
+    end
+
+    test "get_time__block!/1 returns the time__block with given id" do
+      time__block = time__block_fixture()
+      assert Assignments.get_time__block!(time__block.id) == time__block
+    end
+
+    test "create_time__block/1 with valid data creates a time__block" do
+      assert {:ok, %Time_Block{} = time__block} = Assignments.create_time__block(@valid_attrs)
+      assert time__block.end_time == ~N[2010-04-17 14:00:00.000000]
+      assert time__block.start_time == ~N[2010-04-17 14:00:00.000000]
+    end
+
+    test "create_time__block/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Assignments.create_time__block(@invalid_attrs)
+    end
+
+    test "update_time__block/2 with valid data updates the time__block" do
+      time__block = time__block_fixture()
+      assert {:ok, time__block} = Assignments.update_time__block(time__block, @update_attrs)
+      assert %Time_Block{} = time__block
+      assert time__block.end_time == ~N[2011-05-18 15:01:01.000000]
+      assert time__block.start_time == ~N[2011-05-18 15:01:01.000000]
+    end
+
+    test "update_time__block/2 with invalid data returns error changeset" do
+      time__block = time__block_fixture()
+      assert {:error, %Ecto.Changeset{}} = Assignments.update_time__block(time__block, @invalid_attrs)
+      assert time__block == Assignments.get_time__block!(time__block.id)
+    end
+
+    test "delete_time__block/1 deletes the time__block" do
+      time__block = time__block_fixture()
+      assert {:ok, %Time_Block{}} = Assignments.delete_time__block(time__block)
+      assert_raise Ecto.NoResultsError, fn -> Assignments.get_time__block!(time__block.id) end
+    end
+
+    test "change_time__block/1 returns a time__block changeset" do
+      time__block = time__block_fixture()
+      assert %Ecto.Changeset{} = Assignments.change_time__block(time__block)
+    end
+  end
 end

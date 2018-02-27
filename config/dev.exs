@@ -53,6 +53,6 @@ config :tasktrack, Tasktrack.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "tasktrack",
   password: "pahZae5cupei",
-  database: "tasktrack_dev",
+  database: "tasktrack_dev_part2",
   hostname: "localhost",
   pool_size: 10

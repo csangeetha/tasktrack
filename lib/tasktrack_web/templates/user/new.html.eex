@@ -5,7 +5,7 @@
     </div>
     <div class="card-body bg-light text-dark">
       <%= render "form.html", Map.put(assigns, :action, user_path(@conn, :create)) %>
-      <span class="text-center"><%= link "Back", to: page_path(@conn, :index) %></span>
+    <!--  <span class="text-center"><%= link "Back", to: page_path(@conn, :index) %></span>-->
     </div>
   </div>
 </div>

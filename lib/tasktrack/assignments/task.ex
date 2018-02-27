@@ -11,6 +11,7 @@ defmodule Tasktrack.Assignments.Task do
     field :title, :string
     belongs_to :assigned_to, Tasktrack.Accounts.User
     belongs_to :assigned_by, Tasktrack.Accounts.User
+    has_many :time_blocks, Tasktrack.Assignments.Time_Block , foreign_key: :for_task_id
 
     timestamps()
   end
@@ -18,7 +19,7 @@ defmodule Tasktrack.Assignments.Task do
   @doc false
   def changeset(%Task{} = task, attrs) do
     task
-    |> cast(attrs, [:title, :description, :time_taken, :status, :assigned_by_id, :assigned_to_id])
+    |> cast(attrs, [:title, :description, :time_taken, :status, :assigned_by_id, :assigned_to_id ])
     |> validate_required([:title, :description, :time_taken, :status, :assigned_by_id, :assigned_to_id])
   end
 end
