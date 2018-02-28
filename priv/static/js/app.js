@@ -12430,6 +12430,7 @@ function start_time_block(ev) {
 
   (0, _jquery2.default)('#start_tb_' + id).hide();
   (0, _jquery2.default)('#stop_tb_' + id).show();
+  (0, _jquery2.default)('#create_btn_' + id).hide();
 }
 
 function stop_time_block(ev) {
@@ -12449,7 +12450,9 @@ function stop_time_block(ev) {
     contentType: "application/json; charset=UTF-8",
     data: text,
     success: function success(resp) {
-      (0, _jquery2.default)('#tb_create_id-' + task_id).hide();
+      (0, _jquery2.default)('#start_tb_' + id).show();
+      (0, _jquery2.default)('#stop_tb_' + id).hide();
+      (0, _jquery2.default)('#create_btn_' + task_id).show();
       location.reload();
     },
     error: function error() {

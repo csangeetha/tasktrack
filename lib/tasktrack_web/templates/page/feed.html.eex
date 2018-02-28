@@ -94,9 +94,9 @@ window.time__block_path = "<%= time__block_path(@conn, :index) %>";
                 </p>
                 <p>
                   <%= if @current_user.id==task.assigned_to.id do %>
-                  <button class="create-tb-button btn btn-success" value="<%=task.id%>">Create Time Block</button>
-                  <button class="start-tb-button btn btn-success" id="start_tb_<%=task.id%>" value="<%=task.id%>">Start Time Block</button>
-                  <button class="stop-tb-button btn btn-danger" id="stop_tb_<%=task.id%>" value="<%=task.id%>">Stop Time Block</button>
+                  <button class="create-tb-button btn btn-success" id="create_btn_<%=task.id %>" value="<%=task.id%>">Create Time Block</button>
+                  <button class="start-tb-button btn btn-success offset-7" id="start_tb_<%=task.id%>" value="<%=task.id%>">Start Time Block</button>
+                  <button class="stop-tb-button btn btn-danger offset-9" id="stop_tb_<%=task.id%>" value="<%=task.id%>">Stop Time Block</button>
                   <% end %>
                 </p>
                 <div id="tb_create_id-<%= task.id%>" class="row create-div">

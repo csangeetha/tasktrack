@@ -220,6 +220,7 @@ function start_time_block(ev){
 
   $('#start_tb_'+id).hide();
   $('#stop_tb_'+id).show();
+  $('#create_btn_'+id).hide();
 }
 
 function stop_time_block(ev) {
@@ -239,7 +240,9 @@ $.ajax(time__block_path, {
   contentType: "application/json; charset=UTF-8",
   data: text,
   success: (resp) => {
-    $('#tb_create_id-'+task_id).hide();
+    $('#start_tb_'+id).show();
+    $('#stop_tb_'+id).hide();
+    $('#create_btn_'+task_id).show();
     location.reload();
   },
   error: () => {
