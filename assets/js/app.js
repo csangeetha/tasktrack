@@ -89,6 +89,7 @@ function show_tb(ev){
   $('#start_time_id_'+id).val("");
   $('#end_time_id_'+id).val("");
   $('#tb_create_id-'+id).show();
+  $('#start_tb_'+id).hide();
 
 }
 
@@ -96,6 +97,7 @@ function create_time_block(ev){
   var id=ev.target.value;
   var start_time_val=$('#start_time_id_'+id).val();
   var end_time_val=$('#end_time_id_'+id).val();
+
 
   let text = JSON.stringify({
     time__block: {
@@ -113,6 +115,7 @@ function create_time_block(ev){
     data: text,
     success: (resp) => {
       $('#tb_create_id-'+id).hide();
+      $('#start_tb_'+id).show();
       location.reload();
     },
     error: () => {
@@ -212,6 +215,7 @@ function close_edit_tb(ev){
 
 function close_tb(ev){
   $('#tb_create_id-'+ev.target.value).hide();
+  $('#start_tb_'+id).show();
 }
 function start_time_block(ev){
   let id=ev.target.value;
@@ -233,22 +237,22 @@ function stop_time_block(ev) {
       for_task_id: task_id
     },
   });
-console.log(text);
-$.ajax(time__block_path, {
-  method: "post",
-  dataType: "json",
-  contentType: "application/json; charset=UTF-8",
-  data: text,
-  success: (resp) => {
-    $('#start_tb_'+id).show();
-    $('#stop_tb_'+id).hide();
-    $('#create_btn_'+task_id).show();
-    location.reload();
-  },
-  error: () => {
-    alert("Please enter correct values")
-  }
-});
+  console.log(text);
+  $.ajax(time__block_path, {
+    method: "post",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: text,
+    success: (resp) => {
+      $('#start_tb_'+id).show();
+      $('#stop_tb_'+id).hide();
+      $('#create_btn_'+task_id).show();
+      location.reload();
+    },
+    error: () => {
+      alert("Please enter correct values")
+    }
+  });
 }
 
 function init_manage() {

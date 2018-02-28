@@ -12299,6 +12299,7 @@ function show_tb(ev) {
   (0, _jquery2.default)('#start_time_id_' + id).val("");
   (0, _jquery2.default)('#end_time_id_' + id).val("");
   (0, _jquery2.default)('#tb_create_id-' + id).show();
+  (0, _jquery2.default)('#start_tb_' + id).hide();
 }
 
 function create_time_block(ev) {
@@ -12322,6 +12323,7 @@ function create_time_block(ev) {
     data: text,
     success: function success(resp) {
       (0, _jquery2.default)('#tb_create_id-' + id).hide();
+      (0, _jquery2.default)('#start_tb_' + id).show();
       location.reload();
     },
     error: function error() {
@@ -12422,6 +12424,7 @@ function close_edit_tb(ev) {
 
 function close_tb(ev) {
   (0, _jquery2.default)('#tb_create_id-' + ev.target.value).hide();
+  (0, _jquery2.default)('#start_tb_' + id).show();
 }
 function start_time_block(ev) {
   var id = ev.target.value;
