@@ -319,4 +319,15 @@ defmodule Tasktrack.Assignments do
   def change_time__block(%Time_Block{} = time__block) do
     Time_Block.changeset(time__block, %{})
   end
+
+  def feed_tasks_for(user) do
+    user = Repo.preload(user, :managees)
+    mangee_ids = Enum.map(user.managees, &(&1.id))
+
+    Repo.all(Task)
+    |> Enum.filter(&(Enum.member?(mangee_ids, &1.assigned_to_id)))
+    |>Repo.preload([{:assigned_by,:manager}])
+    |>Repo.preload([{:assigned_to,:manager}])
+    |>Repo.preload(:time_blocks)
+  end
 end

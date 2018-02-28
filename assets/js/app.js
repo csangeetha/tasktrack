@@ -244,8 +244,8 @@ function stop_time_block(ev) {
     contentType: "application/json; charset=UTF-8",
     data: text,
     success: (resp) => {
-      $('#start_tb_'+id).show();
-      $('#stop_tb_'+id).hide();
+      $('#start_tb_'+task_id).show();
+      $('#stop_tb_'+task_id).hide();
       $('#create_btn_'+task_id).show();
       location.reload();
     },

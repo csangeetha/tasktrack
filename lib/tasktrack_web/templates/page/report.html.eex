@@ -1,0 +1,39 @@
+<%= if Enum.count(@tasks)>0 do %>
+<div class="row">
+  <div class="col">
+    <h2 class="text-center">Task Status Report </h2>
+    <p> &nbsp;</p>
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <th> Assigned To</th>
+        <th> Task Title </th>
+        <th> Task Description </th>
+        <th> # of Time Blocks </th>
+        <th> Status </th>
+      </thead>
+      <tbody>
+        <%= for task <- @tasks do %>
+        <tr>
+          <td><%=task.assigned_to.name %></td>
+          <td><%=task.title %> </td>
+          <td><%=task.description %> </td>
+          <td><%=Enum.count(task.time_blocks) %></td>
+          <td>  <%= if task.status do %>
+            <span style="color:green;">Completed</span>
+            <% else %>
+            <span style="color:red"> Pending</span>
+            <% end %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% else %>
+<div class="card">
+  <div class="card-header bg-dark text-white text-center"><h2><span style="color:red;">Error</span></h2></div>
+  <div class="card-body bg-light text-center">
+    <span> No managees assigned or no task assigned to show report </span>
+  </div>
+</div>
+<% end %>

@@ -47,12 +47,12 @@ window.current_user_id = "<%= @current_user.id %>";
       <% end %>
     </td>
     <td>
-      <%= if user.managees do %>
+      <%= if Enum.count(user.managees)>0 do %>
       <%= for managee <- user.managees do %>
       <p><%= managee.name %> &nbsp;</p>
       <% end %>
       <% else %>
-      <p>No assignees</p>
+      <p>None</p>
       <% end %>
     </td>
 

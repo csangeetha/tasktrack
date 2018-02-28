@@ -26,6 +26,7 @@ defmodule TasktrackWeb.Router do
 
     get "/", PageController, :index
     get "/feed", PageController, :feed
+    get "/report", PageController, :report
     resources "/users", UserController
     resources "/tasks", TaskController
 

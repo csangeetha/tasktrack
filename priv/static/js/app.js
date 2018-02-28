@@ -12453,8 +12453,8 @@ function stop_time_block(ev) {
     contentType: "application/json; charset=UTF-8",
     data: text,
     success: function success(resp) {
-      (0, _jquery2.default)('#start_tb_' + id).show();
-      (0, _jquery2.default)('#stop_tb_' + id).hide();
+      (0, _jquery2.default)('#start_tb_' + task_id).show();
+      (0, _jquery2.default)('#stop_tb_' + task_id).hide();
       (0, _jquery2.default)('#create_btn_' + task_id).show();
       location.reload();
     },

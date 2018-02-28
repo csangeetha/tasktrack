@@ -19,7 +19,7 @@
           <div class="col-9">
             <p class="p-4">
               <a href="/feed">Feed</a> |
-              <a href="/users">All Users</a>
+              <a href="/users">All Users</a> | <%= link "Report", to: page_path(@conn, :report) %></span>
             </p>
           </div>
           <div class="col-3">
@@ -27,10 +27,6 @@
               Logged in as: <%= @current_user.name %> |
               <%= link "Log Out", to: "/session", method: :delete %>
             </p>
-          </div>
-        <% else %>
-          <div class="col-3 offset-9">
-            <p>Not logged in.</p>
           </div>
         <% end %>
       </div>
