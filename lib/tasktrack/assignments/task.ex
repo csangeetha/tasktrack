@@ -7,7 +7,7 @@ defmodule Tasktrack.Assignments.Task do
   schema "tasks" do
     field :description, :string
     field :status, :boolean, default: false
-    field :time_taken, :time
+    field :time_taken, :time, default: '00:00:00'
     field :title, :string
     belongs_to :assigned_to, Tasktrack.Accounts.User
     belongs_to :assigned_by, Tasktrack.Accounts.User

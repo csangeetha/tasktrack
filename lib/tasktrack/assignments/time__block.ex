@@ -5,8 +5,8 @@ defmodule Tasktrack.Assignments.Time_Block do
   alias Tasktrack.Assignments.Task
 
   schema "time_blocks" do
-    field :end_time, :naive_datetime
-    field :start_time, :naive_datetime
+    field :end_time, :naive_datetime,default: :calendar.local_time()
+    field :start_time, :naive_datetime,default: :calendar.local_time()
     belongs_to :for_task, Task
 
     timestamps()

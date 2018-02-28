@@ -50,4 +50,6 @@
   </tbody>
 </table>
 
+<%= if @current_user && Enum.count(@manages)>=1 do %>
 <span><%= link "New Task", to: task_path(@conn, :new) %></span>
+<% end %>

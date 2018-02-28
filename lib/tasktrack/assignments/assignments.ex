@@ -19,8 +19,8 @@ defmodule Tasktrack.Assignments do
   """
   def list_tasks do
     Repo.all(Task)
-    |>Repo.preload(:assigned_by)
-    |>Repo.preload(:assigned_to)
+    |>Repo.preload([{:assigned_by,:manager}])
+    |>Repo.preload([{:assigned_to,:manager}])
     |>Repo.preload(:time_blocks)
   end
 
@@ -40,8 +40,8 @@ defmodule Tasktrack.Assignments do
   """
   def get_task!(id) do
     Repo.get!(Task, id)
-    |>Repo.preload(:assigned_by)
-    |>Repo.preload(:assigned_to)
+    |>Repo.preload([{:assigned_by,:manager}])
+    |>Repo.preload([{:assigned_to,:manager}])
     |>Repo.preload(:time_blocks)
   end
 

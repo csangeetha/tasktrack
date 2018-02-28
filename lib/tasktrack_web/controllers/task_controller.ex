@@ -7,7 +7,7 @@ defmodule TasktrackWeb.TaskController do
   def index(conn, _params) do
     current_user = conn.assigns[:current_user]
     manages= Tasktrack.Assignments.manages_map_for(current_user.id)
-    tasks = Assignments.list_tasks()  
+    tasks = Assignments.list_tasks()
     render(conn, "index.html", tasks: tasks, manages: manages)
   end
 

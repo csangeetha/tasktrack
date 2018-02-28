@@ -12208,12 +12208,6 @@ var _jquery2 = _interopRequireDefault(_jquery);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Import local files
-//
-// Local files can be imported directly using relative
-// paths "./socket" or full ones "web/static/js/socket".
-
-// import socket from "./socket"
 // Brunch automatically concatenates all files in your
 // watched paths. Those paths can be configured at
 // config.paths.watched in "brunch-config.js".
@@ -12227,6 +12221,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
+var task_id = 0;
+var start_time_new = "";
+// Import local files
+//
+// Local files can be imported directly using relative
+// paths "./socket" or full ones "web/static/js/socket".
+
+// import socket from "./socket"
 function update_buttons() {
   (0, _jquery2.default)('.manage-button').each(function (_, bb) {
     var user_id = (0, _jquery2.default)(bb).data('user-id');
@@ -12290,17 +12292,200 @@ function manage_click(ev) {
     manage(user_id);
   }
 }
+function show_tb(ev) {
+  console.log("hi there btn!");
+  console.log(ev.target.value);
+  var id = ev.target.value;
+  (0, _jquery2.default)('#start_time_id_' + id).val("");
+  (0, _jquery2.default)('#end_time_id_' + id).val("");
+  (0, _jquery2.default)('#tb_create_id-' + id).show();
+}
+
+function create_time_block(ev) {
+  var id = ev.target.value;
+  var start_time_val = (0, _jquery2.default)('#start_time_id_' + id).val();
+  var end_time_val = (0, _jquery2.default)('#end_time_id_' + id).val();
+
+  var text = JSON.stringify({
+    time__block: {
+      start_time: start_time_val + ":00.000000Z",
+      end_time: end_time_val + ":00.000000Z",
+      for_task_id: id
+    }
+  });
+  console.log(text);
+
+  _jquery2.default.ajax(time__block_path, {
+    method: "post",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: text,
+    success: function success(resp) {
+      (0, _jquery2.default)('#tb_create_id-' + id).hide();
+      location.reload();
+    },
+    error: function error() {
+      alert("Please enter correct values");
+    }
+  });
+}
+
+function delete_tb(ev) {
+  var id = ev.target.value;
+  var time_block_id = (0, _jquery2.default)(ev.target).data('time-block');
+  console.log(id, time_block_id);
+
+  _jquery2.default.ajax(time__block_path + "/" + time_block_id, {
+    method: "delete",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: "",
+    success: function success() {
+      location.reload();
+    },
+    error: function error() {
+      alert("Can't delete task");
+    }
+  });
+  //$('#time-block-div-'+id).load('http://localhost:4000/feed' + ' #time-block-div-'+id);
+}
+
+function edit_time_block(ev) {
+  var id = ev.target.value;
+  var tbid = (0, _jquery2.default)(ev.target).data('time-id');
+  (0, _jquery2.default)('#tb_start_time_' + id + '_' + tbid).hide();
+  (0, _jquery2.default)('#tb_end_time_' + id + '_' + tbid).hide();
+  (0, _jquery2.default)('#new_start_time_id_' + id + '_' + tbid).show();
+  (0, _jquery2.default)('#new_end_time_id_' + id + '_' + tbid).show();
+  (0, _jquery2.default)('#update_button_' + id + '_' + tbid).show();
+  (0, _jquery2.default)('#edit_button_' + id + '_' + tbid).hide();
+  (0, _jquery2.default)('#close_btn_' + id + '_' + tbid).show();
+  (0, _jquery2.default)('#delete_btn_' + id + '_' + tbid).hide();
+  console.log(id + '_' + tbid);
+}
+function update_time_block(ev) {
+  var id = ev.target.value;
+  var tbid = (0, _jquery2.default)(ev.target).data('time-id');
+  var start_time_val = (0, _jquery2.default)('#new_start_time_id_' + id + '_' + tbid).val();
+  var end_time_val = (0, _jquery2.default)('#new_end_time_id_' + id + '_' + tbid).val();
+  start_time_val += ":00.000000Z";
+  end_time_val += ":00.000000Z";
+  if (start_time_val == null || start_time_val == ":00.000000Z") start_time_val = (0, _jquery2.default)('#tb_start_time_' + id + '_' + tbid).html();
+  if (end_time_val == null || end_time_val == ":00.000000Z") end_time_val = (0, _jquery2.default)('#tb_end_time_' + id + '_' + tbid).html();
+
+  var text = JSON.stringify({
+    time__block: {
+      start_time: start_time_val,
+      end_time: end_time_val,
+      for_task_id: id
+    }
+  });
+  console.log(text);
+
+  _jquery2.default.ajax(time__block_path + "/" + tbid, {
+    method: "put",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: text,
+    success: function success(resp) {
+      (0, _jquery2.default)('#tb_start_time_' + id + '_' + tbid).show();
+      (0, _jquery2.default)('#tb_end_time_' + id + '_' + tbid).show();
+      (0, _jquery2.default)('#new_start_time_id_' + id + '_' + tbid).hide();
+      (0, _jquery2.default)('#new_end_time_id_' + id + '_' + tbid).hide();
+      (0, _jquery2.default)('#update_button_' + id + '_' + tbid).hide();
+      (0, _jquery2.default)('#edit_button_' + id + '_' + tbid).show();
+      (0, _jquery2.default)('#new_start_time_id_' + id + '_' + tbid).val("");
+      (0, _jquery2.default)('#new_end_time_id_' + id + '_' + tbid).val("");
+      (0, _jquery2.default)('#close_btn_' + id + '_' + tbid).hide();
+      (0, _jquery2.default)('#delete_btn_' + id + '_' + tbid).show();
+      location.reload();
+    },
+    error: function error() {
+      alert("Please enter correct values");
+    }
+  });
+}
+function close_edit_tb(ev) {
+  var id = ev.target.value;
+  var tbid = (0, _jquery2.default)(ev.target).data('time-block');
+  (0, _jquery2.default)('#tb_start_time_' + id + '_' + tbid).show();
+  (0, _jquery2.default)('#tb_end_time_' + id + '_' + tbid).show();
+  (0, _jquery2.default)('#new_start_time_id_' + id + '_' + tbid).hide();
+  (0, _jquery2.default)('#new_end_time_id_' + id + '_' + tbid).hide();
+  (0, _jquery2.default)('#update_button_' + id + '_' + tbid).hide();
+  (0, _jquery2.default)('#edit_button_' + id + '_' + tbid).show();
+  (0, _jquery2.default)('#new_start_time_id_' + id + '_' + tbid).val("");
+  (0, _jquery2.default)('#new_end_time_id_' + id + '_' + tbid).val("");
+  (0, _jquery2.default)('#close_btn_' + id + '_' + tbid).hide();
+  (0, _jquery2.default)('#delete_btn_' + id + '_' + tbid).show();
+}
+
+function close_tb(ev) {
+  (0, _jquery2.default)('#tb_create_id-' + ev.target.value).hide();
+}
+function start_time_block(ev) {
+  var id = ev.target.value;
+  task_id = id;
+  start_time_new = new Date(_jquery2.default.now());
+
+  (0, _jquery2.default)('#start_tb_' + id).hide();
+  (0, _jquery2.default)('#stop_tb_' + id).show();
+}
+
+function stop_time_block(ev) {
+  var end_time_new = new Date(_jquery2.default.now());
+
+  var text = JSON.stringify({
+    time__block: {
+      start_time: start_time_new,
+      end_time: end_time_new,
+      for_task_id: task_id
+    }
+  });
+  console.log(text);
+  _jquery2.default.ajax(time__block_path, {
+    method: "post",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: text,
+    success: function success(resp) {
+      (0, _jquery2.default)('#tb_create_id-' + task_id).hide();
+      location.reload();
+    },
+    error: function error() {
+      alert("Please enter correct values");
+    }
+  });
+}
 
 function init_manage() {
   if (!(0, _jquery2.default)('.manage-button')) {
     return;
   }
-
+  console.log("hi there!");
   (0, _jquery2.default)(".manage-button").click(manage_click);
 
   update_buttons();
+  console.log("hi there !");
+  hide_everything();
+  (0, _jquery2.default)('.create-tb-button').click(show_tb);
+  (0, _jquery2.default)('.submit-tb').click(create_time_block);
+  (0, _jquery2.default)('.delete-btn').click(delete_tb);
+  (0, _jquery2.default)('.edit-button').click(edit_time_block);
+  (0, _jquery2.default)('.update-button').click(update_time_block);
+  (0, _jquery2.default)('.close-btn').click(close_edit_tb);
+  (0, _jquery2.default)('.close-tb').click(close_tb);
+  (0, _jquery2.default)('.start-tb-button').click(start_time_block);
+  (0, _jquery2.default)('.stop-tb-button').click(stop_time_block);
 }
-
+function hide_everything() {
+  (0, _jquery2.default)('.close-btn').hide();
+  (0, _jquery2.default)("div[id^='tb_create_id-']").hide();
+  (0, _jquery2.default)("input[id^='new_start_time_id_']").hide();
+  (0, _jquery2.default)("input[id^='new_end_time_id_']").hide();
+  (0, _jquery2.default)("button[id^='update_button']").hide();
+  (0, _jquery2.default)("button[id^='stop_tb_']").hide();
+}
 (0, _jquery2.default)(init_manage);
 
 });

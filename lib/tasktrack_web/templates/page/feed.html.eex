@@ -1,3 +1,7 @@
+<script>
+window.time__block_path = "<%= time__block_path(@conn, :index) %>";
+</script>
+
 <%= if @current_user && Enum.count(@manages)>=1 do %>
 <div class="row">
   <div class="col">
@@ -19,29 +23,99 @@
     <div class="row">
       <div class="col">
         <div class="card">
-          <div class="card-header"><%= task.title %>
-            <span class="col-4 offset-9">
+          <div class="card-header"><strong class="text-uppercase"><%= task.title %></strong>
+            <%= if @current_user.id==task.assigned_to.manager.id do %>
+            <span class="col-4 offset-8">
               <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
               <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-            </span></div>
-            <div class="card-body">
-              <h6 class="card-title"><%= task.assigned_to.name %></h6>
-              <p><%= task.description %></p>
-              <p>
-                <span>Status:
-                  <%= if task.status do %>
-                  <span style="color:green;">Completed</span>
-                  <% else %>
-                  <span style="color:red"> Pending</span>
+            </span>
+            <% end %>
+          </div>
+          <div class="card-body">
+            <h6 class="card-title"><strong><%= task.assigned_to.name %></strong></h6>
+            <p><%= task.description %></p>
+            <div id="time-block-div-<%=task.id%>"><strong>Time blocks </strong>
+              <%= if task.time_blocks && Enum.count(task.time_blocks)>0 do %>
+              <table class="table">
+                <thead>
+                  <th>Start Time</th>
+                  <th> - </th>
+                  <th>End Time</th>
+                  <%= if @current_user.id==task.assigned_to.id do %>
+                  <th> Manage Block</th>
                   <% end %>
-                </span>
-                <span class="col-3 offset-3">Time taken: <%= task.time_taken %></span>
-                <span class="col-3 offset-3">Created by: <%= task.assigned_by.name %></span>
-              </p>
+                </thead>
+                <tbody>
+                  <%= for time_block <- task.time_blocks do %>
+                  <tr>
+                    <td>
+                      <p id="tb_start_time_<%=task.id%>_<%=time_block.id %>"><%= time_block.start_time %></p>
+                      <input type="datetime-local" id="new_start_time_id_<%=task.id%>_<%=time_block.id %>" value="<%= time_block.start_time %>"/>
+                    </td>
+                    <td> - </td>
+                    <td>
+                      <p id="tb_end_time_<%=task.id%>_<%=time_block.id %>"><%= time_block.end_time %></p>
+                      <input type="datetime-local" id="new_end_time_id_<%=task.id%>_<%=time_block.id %>" value="<%= time_block.end_time %>"/>
+                    </td>
+                    <%= if @current_user.id==task.assigned_to.id do %>
+                    <td>
+
+                      <button id="edit_button_<%=task.id%>_<%=time_block.id %>" class="edit-button btn btn-secondary"
+                        data-time-id="<%=time_block.id %>"
+                        value="<%=task.id%>">Edit</button>
+                        <button id="update_button_<%=task.id%>_<%=time_block.id %>" class="update-button btn btn-secondary"
+                          data-time-id="<%=time_block.id %>"
+                          value="<%=task.id%>">Update</button>
+                          <button class="close-btn btn btn-danger" id="close_btn_<%=task.id%>_<%=time_block.id %>" value="<%=task.id %>" data-time-block="<%=time_block.id %>"> Close</button>
+                          <button class="delete-btn btn btn-danger" id="delete_btn_<%=task.id%>_<%=time_block.id %>" value="<%=task.id %>" data-time-block="<%=time_block.id %>"> Delete</button>
+                        </td>
+                        <% end %>
+                        <!--<span class="delete-btn" value="<%=task.id %>"><%= link "Delete", to: time__block_path(@conn, :delete, time_block),
+                        method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>-->
+                      </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                  <% else %>
+                  <p> No time block to display </p>
+                  <% end %>
+                </div>
+
+                <p>
+                  <span>Status:
+                    <%= if task.status do %>
+                    <span style="color:green;">Completed</span>
+                    <% else %>
+                    <span style="color:red"> Pending</span>
+                    <% end %>
+                  </span>
+
+                  <span class="col-3 offset-6">Created by: <%= task.assigned_by.name %></span>
+                </p>
+                <p>
+                  <%= if @current_user.id==task.assigned_to.id do %>
+                  <button class="create-tb-button btn btn-success" value="<%=task.id%>">Create Time Block</button>
+                  <button class="start-tb-button btn btn-success" id="start_tb_<%=task.id%>" value="<%=task.id%>">Start Time Block</button>
+                  <button class="stop-tb-button btn btn-danger" id="stop_tb_<%=task.id%>" value="<%=task.id%>">Stop Time Block</button>
+                  <% end %>
+                </p>
+                <div id="tb_create_id-<%= task.id%>" class="row create-div">
+                  <div class="col text-center">
+                    <p><label> Enter Start Time : </label>&nbsp;&nbsp;
+                      <input type="datetime-local" id="start_time_id_<%=task.id%>"/></p>
+                      <p><label> Enter End Time : </label>&nbsp;&nbsp;
+                        <input type="datetime-local" id="end_time_id_<%=task.id%>"/></p>
+                        <p><input type="hidden" id="task_id_<%=task.id%>" value="<%= task.id %>"/></p>
+                        <p>
+                          <button class="submit-tb btn btn-success" value="<%=task.id%>"> Submit </button> &nbsp;&nbsp;
+                          <button class="close-tb btn btn-danger" value="<%=task.id%>">Close</button>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          <% end %>
         </div>
-      </div>
-    </div>
-    <% end %>
-  </div>
