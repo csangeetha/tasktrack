@@ -38,6 +38,6 @@ TASKTACK -PART 2 :
 
 9. A manager can see a consolidated report of the tasks assigned to his managees in the Report page.
 
-10. Only a user with managees gets a proper output otherwise the page displays error for other users.
+10. Only a user with managees gets a proper output otherwise the page displays error for other users on Report page.
 
 
