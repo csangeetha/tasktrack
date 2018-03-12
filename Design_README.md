@@ -19,3 +19,25 @@
 10. The status of the task , if completed is shown in green 'Completed' , other wise it is shown in red 'Pending'. 
 
 11. A user can see on top right of the feed page if he/she is logged in . A log out link next to it can be used to log out of the session.
+
+TASKTACK -PART 2 :
+
+1. User must first register using the register link and then use the same credentials to login to the Task tracker.
+
+2. On the Task track feed, top left corner has three links - Feed, All users , Report. Clicking on each of these link redirect to appropriate pages. 
+3. On the Feed page, all users can see reports of all other users , but only the user to whom the issue is assigned or hhis/her manager can modify the post. 
+4. In all users page, if a user is not assigned any assignees, he/she can choose to manage a user who does not have a manager assigned. The user can release his/her managee from the same page. Only a manager can create issues for his/her managees. 
+
+5. A user cannot manage his/her manager.
+
+6. A user can edit his/her credentials only.
+
+7. A user to whom a issue is assigned to can add/edit/delete a particular time block which appers on the issue block. He/ She can add a time block by using create time block with appropriate details filled. User can also add time block using start and stop time blocks. 
+
+8. A user or the manager can modify/delete issues.
+
+9. A manager can see a consolidated report of the tasks assigned to his managees in the Report page.
+
+10. Only a user with managees gets a proper output otherwise the page displays error for other users.
+
+
